@@ -25,7 +25,6 @@ p = zeros(size(X, 1), 1);
 X = [ones(m, 1) X];
 
 z2 = Theta1 * X';
-
 A2 = sigmoid(z2);
 
 % Add ones to the A2 data matrix
@@ -34,9 +33,8 @@ A2 = [ones(n, 1) A2'];
 z3 = Theta2 * A2';
 
 hypotheses = sigmoid(z3);
-hypotheses
+hypotheses = hypotheses';
 [x, p] = max(hypotheses, [], 2);
-p = p';
 
 % =========================================================================
 

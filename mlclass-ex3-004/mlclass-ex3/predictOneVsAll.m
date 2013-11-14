@@ -32,6 +32,7 @@ X = [ones(m, 1) X];
 
 hypotheses = sigmoid(X * all_theta');
 [x, p] = max(hypotheses, [], 2);
+
 % for c = 1:num_labels
 %   hypotheses(c, :) = sigmoid(X * all_theta(c, :)');
 % end
