@@ -95,18 +95,20 @@ J = 1/m * sum(J) + reg_term;
 
 delta_3 = zeros(size(A3'));
 
-for inum = 1:m
-  y_vect = eye(num_labels)(:,y(inum,:))';
-  delta_3(inum,:) = A3'(inum, :) .- y_vect;
-end
+% for inum = 1:m
+%   y_vect = eye(num_labels)(:,y(inum,:))';
+%   delta_3(inum,:) = A3'(inum, :) .- y_vect;
+% end
+
+delta_3 = A3 - Y;
 
 % delta_2 = Theta2'(2:end,:) * delta_3';
 % delta_2 = delta_2 .* sigmoidGradient(z2);
-delta_2 = Theta2'(2:end,:) * delta_3';
+delta_2 = Theta2'(2:end,:) * delta_3;
 delta_2 = delta_2 .* sigmoidGradient(z2);
 
 Theta1_grad = 1/m * delta_2 * X;
-Theta2_grad = 1/m * delta_3' * A2;
+Theta2_grad = 1/m * delta_3 * A2;
 
 % Part 3: Implement regularization with the cost function and gradients.
 %
