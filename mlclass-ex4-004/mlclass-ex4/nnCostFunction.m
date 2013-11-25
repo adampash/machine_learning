@@ -1,8 +1,8 @@
 function [J grad] = nnCostFunction(nn_params, ...
-                                   input_layer_size, ...
-                                   hidden_layer_size, ...
-                                   num_labels, ...
-                                   X, y, lambda)
+input_layer_size, ...
+hidden_layer_size, ...
+num_labels, ...
+X, y, lambda)
 %NNCOSTFUNCTION Implements the neural network cost function for a two layer
 %neural network which performs classification
 %   [J grad] = NNCOSTFUNCTON(nn_params, hidden_layer_size, num_labels, ...
@@ -17,10 +17,10 @@ function [J grad] = nnCostFunction(nn_params, ...
 % Reshape nn_params back into the parameters Theta1 and Theta2, the weight matrices
 % for our 2 layer neural network
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
-                 hidden_layer_size, (input_layer_size + 1));
+hidden_layer_size, (input_layer_size + 1));
 
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                 num_labels, (hidden_layer_size + 1));
+num_labels, (hidden_layer_size + 1));
 
 % Setup some useful variables
 m = size(X, 1);
@@ -53,10 +53,19 @@ z3 = Theta2 * A2';
 hypotheses = sigmoid(z3);
 A3 = hypotheses;
 
+Y = zeros(size(A3));
+
 for inum = 1:m
-  y_vect = eye(num_labels)(:,y(inum,:))';
-  J += (-y_vect * log(hypotheses(:,inum))) - ((1 - y_vect) * log(1 - hypotheses(:,inum)));
+  Y(:, inum) = eye(num_labels)(:,y(inum,:))';
 end
+
+J = sum(sum((-Y .* log(hypotheses)) - ((1 - Y) .* log(1 - hypotheses))));
+
+% non-vectorized version
+% for inum = 1:m
+%   y_vect = eye(num_labels)(:,y(inum,:))';
+%   J += (-y_vect * log(hypotheses(:,inum))) - ((1 - y_vect) * log(1 - hypotheses(:,inum)));
+% end
 
 t1_reg = sum(sum(Theta1 .^ 2));
 t2_reg = sum(sum(Theta2 .^ 2));
